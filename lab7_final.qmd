@@ -21,7 +21,7 @@ You are the genomics data scientist on a team that works on obesity. A project l
 
 **Your job:** write a consult memo that reaches a clear recommendation and defends it with the data. You are not writing a textbook summary. You are advising a decision, and you have to take a position.
 
-This is the last lab and it works differently from Labs 1 to 6. There are no fill-in-the-blank starter chunks and no single right answer at the end. The only code given to you reads the files in. The analysis chunks name *what* to compute and leave the *how* entirely to you (and your AI friends). Labs 1 to 6 taught you all the moves (allele frequencies, genomic coordinates and overlaps, variant annotation, GWAS summary statistics, public-data integration, expression). This one asks you to use them to advise a decision.
+This is the last lab and it works differently from Labs 1 to 6. There are no fill-in-the-blank starter chunks and no single right answer at the end. The only code given to you reads the files in. The analysis chunks name *what* to compute and leave the *how* entirely to you (and your AI friends). Labs 1 to 6 taught you all the moves (allele frequencies, genomic coordinates and overlaps, variant annotation, GWAS summary statistics, public data integration, expression). This one asks you to use them to advise a decision.
 
 This document is both your instructions and your worksheet. Under each numbered heading there is a "What to do here" box, then space for your code and your writing. Work top to bottom. The data is included in `data/`. 
 
@@ -91,7 +91,7 @@ In one short paragraph (about 100 words), state the question you have been asked
 
 ::: {.callout-note}
 ## What to do here
-Read `data/lab7_fto_gwascat.csv` (real associations for this SNP from the NHGRI-EBI GWAS Catalog). Find the body mass index rows and read off, for the risk allele, the per-allele effect size (a beta, in kg/m^2) and the p-value. Notice how many different traits this one SNP is associated with. Then answer in prose: is this a large or a modest per-allele effect for a *common* variant, and what do the very small p-value and the repeated reports across studies tell you (and, just as important, what do they *not* tell you)?
+Read `data/lab7_fto_gwascat.csv` (real associations for this SNP from the NHGRI-EBI GWAS Catalog). Find the body mass index rows and read off, for the risk allele, the per allele effect size (a beta, in kg/m^2) and the p-value. Notice how many different traits this one SNP is associated with. Then answer in prose: is this a large or a modest per allele effect for a *common* variant, and what do the very small p-value and the repeated reports across studies tell you (and, just as important, what do they *not* tell you)?
 
 The columns: `trait` is what the study measured; `risk_allele` is the allele the study reports the effect for; `effect_type` says what kind of number `effect_size` is (a beta in kg/m^2 for BMI, an odds ratio for a disease, or "not reported"); `p_value` is the association p-value; `risk_freq` is the risk allele's frequency in that study's sample (it reads in as text, because some rows say "not reported"); `pmid` is the PubMed ID of the paper. Each row is one reported association, so the same trait can appear more than once.
 
@@ -104,7 +104,7 @@ gwas
 ```
 
 ```{r analyze-gwas}
-# TODO: pull out the BMI row(s) and report the per-allele beta and the p-value for the risk allele.
+# TODO: pull out the BMI row(s) and report the per allele beta and the p-value for the risk allele.
 # TODO: count how many distinct traits this single SNP is associated with.
 # Hints: look at the whole table before filtering. filter() on trait, risk_allele, and
 #   effect_type gets you the clean BMI rows.
@@ -127,7 +127,7 @@ stop("Not done: replace this line with your code")
 
 ::: {.callout-note}
 ## What to do here
-Read `data/lab7_fto_af.csv` (real risk allele frequencies by genetic-ancestry group, from gnomAD via Ensembl). Make one labelled, ordered bar plot of the risk allele frequency across groups, and read off the highest- and lowest-frequency groups with numbers. Then answer in prose: describe the pattern across ancestries, and say what it means for a polygenic risk score trained mostly in Europeans and then applied to other groups. Remember these are population frequencies, not any individual's risk.
+Read `data/lab7_fto_af.csv` (real risk allele frequencies by genetic ancestry group, from gnomAD via Ensembl). Make one labelled, ordered bar plot of the risk allele frequency across groups, and read off the highest and lowest frequency groups with numbers. Then answer in prose: describe the pattern across ancestries, and say what it means for a polygenic risk score trained mostly in Europeans and then applied to other groups. Remember these are population frequencies, not any individual's risk.
 
 The columns: `population` and `code` name a gnomAD genetic ancestry group, and `allele_freq` is the fraction of chromosomes in that group that carry the A allele (so 0.40 means 40% of chromosomes, not 40% of people).
 :::
@@ -139,7 +139,7 @@ af
 
 ```{r plot-af}
 # TODO: bar plot of allele_freq by population (ordered, with axis labels and a title).
-# TODO: identify the highest- and lowest-frequency groups.
+# TODO: identify the highest and lowest frequency groups.
 # Hints: geom_col() draws bars from values already in the table (geom_bar() counts
 #   rows, which is not what you want). fct_reorder(population, allele_freq) puts the
 #   bars in order. Long group names are easier to read on the y axis. labs() sets
@@ -149,17 +149,17 @@ af
 stop("Not done: replace this line with your code")
 ```
 
-> WRITE (~100 words): describe the ancestry pattern with numbers, and explain the polygenic-risk-score portability concern it raises.
+> WRITE (~100 words): describe the ancestry pattern with numbers, and explain the polygenic risk score portability concern it raises.
 
 # 4. Which gene does the variant act through?
 
 ::: {.callout-note}
 ## What to do here
-Read `data/lab7_fto_ccre.bed` (ENCODE candidate cis-regulatory elements within 20 kb of the SNP, from UCSC). Work out two things: does the lead SNP position fall *inside* any of these candidate regulatory elements, and how many candidate elements sit in the window? Then reason in prose about the central question of the consult: the SNP sits in FTO, but is FTO necessarily the gene it acts on? Address the tag-versus-causal point (a GWAS lead SNP is usually a tag in linkage disequilibrium, not the proven functional variant) and the "nearest gene" trap, and say what kind of evidence would actually establish the causal gene.
+Read `data/lab7_fto_ccre.bed` (ENCODE candidate cis-regulatory elements within 20 kb of the SNP, from UCSC). Work out two things: does the lead SNP position fall *inside* any of these candidate regulatory elements, and how many candidate elements sit in the window? Then reason in prose about the central question of the consult: the SNP sits in FTO, but is FTO necessarily the gene it acts on? Address the tag versus causal point (a GWAS lead SNP is usually a tag in linkage disequilibrium, not the proven functional variant) and the "nearest gene" trap, and say what kind of evidence would actually establish the causal gene.
 
 Each row is one element: `start` and `end` are BED coordinates (0-based start), `name` is its ENCODE ID, and `label` is its type. The label codes are `enhD` (distal enhancer-like), `enhP` (proximal enhancer-like), `prom` (promoter-like), `CTCF` (CTCF-only), and `K4m3` (DNase plus H3K4me3). The window is the SNP position plus or minus 20,000 bp.
 
-For that last question, go back to the FTO case study from the GWAS 4 lecture. Two papers tell the story, and their abstracts are enough: [Smemo et al. 2014](https://pubmed.ncbi.nlm.nih.gov/24646999/) (*Nature*) showed that the obesity-associated region inside FTO physically contacts and regulates a different gene, *IRX3*, roughly half a megabase away. [Claussnitzer et al. 2015](https://pubmed.ncbi.nlm.nih.gov/26287746/) (*NEJM*) traced the signal to a different variant in the same LD block, which changes the expression of *IRX3* and *IRX5* in fat cell precursors. As you read, notice what *kinds* of evidence they used, because that is what your answer about settling the causal gene should name.
+For the causal gene question, go back to the FTO case study from the GWAS 4 lecture. Two papers tell the story, and their abstracts are enough: [Smemo et al. 2014](https://pubmed.ncbi.nlm.nih.gov/24646999/) (*Nature*) showed that the region inside FTO associated with obesity physically contacts and regulates a different gene, *IRX3*, roughly half a megabase away. [Claussnitzer et al. 2015](https://pubmed.ncbi.nlm.nih.gov/26287746/) (*NEJM*) traced the signal to a different variant in the same LD block, which changes the expression of *IRX3* and *IRX5* in fat cell precursors. As you read, notice what *kinds* of evidence they used, because that is what your answer about settling the causal gene should name.
 :::
 
 ```{r read-ccre}
@@ -217,7 +217,7 @@ writeLines(readLines("data/lab7_fto_ai_brief.md"))
 
 ::: {.callout-note}
 ## What to do here
-This is the memo's point. In about 150 words, give the team your recommendation, grounded in Sections 2 to 4, on the two things they asked about: (a) should they treat FTO as the causal gene and prioritize it for functional and drug-target work, and (b) is rs9939609 a sound basis for a customer-facing obesity risk score? Take a clear position on each. Then list the specific cautions a data scientist must carry here, tied to your own numbers rather than generic boilerplate: the modest per-allele effect of a common variant, the tag-versus-causal problem and the nearest-gene trap, the ancestry differences in risk allele frequency and what they do to a risk score's portability, and the fact that these frequencies and associations come from particular cohorts.
+This is the memo's point. In about 150 words, give the team your recommendation, grounded in Sections 2 to 4, on the two things they asked about: (a) should they treat FTO as the causal gene and prioritize it for functional and drug target work, and (b) is rs9939609 a sound basis for a customer-facing obesity risk score? Take a clear position on each. Then list the specific cautions a data scientist must carry here, tied to your own numbers rather than generic boilerplate: the modest per allele effect of a common variant, the tag versus causal problem and the nearest gene trap, the ancestry differences in risk allele frequency and what they do to a risk score's portability, and the fact that these frequencies and associations come from particular cohorts.
 :::
 
 > WRITE (~150 words): your recommendation on (a) and (b), and the case-specific cautions.
