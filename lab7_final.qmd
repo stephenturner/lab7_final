@@ -23,13 +23,13 @@ You are the genomics data scientist on a team that works on obesity. A project l
 
 This is the last lab and it works differently from Labs 1 to 6. There are no fill-in-the-blank starter chunks and no single right answer at the end. The only code given to you reads the files in. The analysis chunks name *what* to compute and leave the *how* entirely to you (and your AI friends). Labs 1 to 6 taught you all the moves (allele frequencies, genomic coordinates and overlaps, variant annotation, GWAS summary statistics, public data integration, expression). This one asks you to use them to advise a decision.
 
-This document is both your instructions and your worksheet. Under each numbered heading there is a "What to do here" box, then space for your code and your writing. Work top to bottom. The data is included in `data/`. 
+This document is both your instructions and your worksheet. Under each numbered heading there is a "What to do here" box, then space for your code and your writing. Work top to bottom. The data is included in `data/`.
 
 ::: {.callout-tip}
 ## On using AI in this assignment
-This assignment isn't easy. There aren't simple answers, with much of the interpretation being open-ended. 
+This assignment isn't easy. There aren't simple answers, with much of the interpretation being open-ended.
 
-For code: I encourage you to write the analysis code yourself if you can, but you may use AI to help with planning, writing code, or explaining code so long as you disclose it at the end. I don't care about the mechanics of the code as much as I care about you thinking like a data scientist in genomics would think. 
+For code: I encourage you to write the analysis code yourself if you can, but you may use AI to help with planning, writing code, or explaining code so long as you disclose it at the end. I don't care about the mechanics of the code as much as I care about you thinking like a data scientist in genomics would think.
 
 For your narrative: The interpretation and the recommendation must be your own words and not AI generated.
 
@@ -46,7 +46,7 @@ For background: FTO is probably the best-known cautionary tale in GWAS interpret
 
 **Suggested length:** about 500-1,000 words of prose, not counting code, output, tables, plots.
 
-**Grading.** This lab is worth 60 points (double a standard lab) and does not use the standard lab rubric. Most of the points are for what you conclude and how well your own numbers back it up. 
+**Grading.** This lab is worth 60 points (double a standard lab) and does not use the standard lab rubric. Most of the points are for what you conclude and how well your own numbers back it up.
 
 | Part | Points |
 | --- | --- |
@@ -93,7 +93,7 @@ In one short paragraph (about 100 words), state the question you have been asked
 ## What to do here
 Read `data/lab7_fto_gwascat.csv` (real associations for this SNP from the NHGRI-EBI GWAS Catalog). Find the body mass index rows and read off, for the risk allele, the per allele effect size (a beta, in kg/m^2) and the p-value. Notice how many different traits this one SNP is associated with. Then answer in prose: is this a large or a modest per allele effect for a *common* variant, and what do the very small p-value and the repeated reports across studies tell you (and, just as important, what do they *not* tell you)?
 
-The columns: `trait` is what the study measured; `risk_allele` is the allele the study reports the effect for; `effect_type` says what kind of number `effect_size` is (a beta in kg/m^2 for BMI, an odds ratio for a disease, or "not reported"); `p_value` is the association p-value; `risk_freq` is the risk allele's frequency in that study's sample (it reads in as text, because some rows say "not reported"); `pmid` is the PubMed ID of the paper. Each row is one reported association, so the same trait can appear more than once.
+The columns: `trait` is what the study measured; `risk_allele` is the allele the study reports the effect for (`?` where it did not say); `effect_type` says what kind of number `effect_size` is (a beta in kg/m^2, a beta in some other unit such as weeks, `beta (unit)` where the study did not give the unit, an odds ratio for a disease, or "not reported"); `p_value` is the association p-value; `risk_freq` is the risk allele's frequency in that study's sample (it reads in as text, because some rows say "not reported"); `reported_gene` is the gene the study's authors named for the signal, which is a label and not evidence of mechanism; `pmid` is the PubMed ID of the paper. Each row is one reported association, so the same trait can appear more than once.
 
 For scale: in adults, BMI has a standard deviation of roughly 4 to 5 kg/m^2, and 1 kg/m^2 is about 3 kg of body weight for someone 1.75 m tall.
 :::
@@ -129,7 +129,7 @@ stop("Not done: replace this line with your code")
 ## What to do here
 Read `data/lab7_fto_af.csv` (real risk allele frequencies by genetic ancestry group, from gnomAD via Ensembl). Make one labelled, ordered bar plot of the risk allele frequency across groups, and read off the highest and lowest frequency groups with numbers. Then answer in prose: describe the pattern across ancestries, and say what it means for a polygenic risk score trained mostly in Europeans and then applied to other groups. Remember these are population frequencies, not any individual's risk.
 
-The columns: `population` and `code` name a gnomAD genetic ancestry group, and `allele_freq` is the fraction of chromosomes in that group that carry the A allele (so 0.40 means 40% of chromosomes, not 40% of people).
+The columns: `population` and `code` name a gnomAD genetic ancestry group, and `allele_freq` is the fraction of chromosomes in that group that carry the A allele (so 0.40 means 40% of chromosomes, not 40% of people). `risk_allele` and `source` are the same on every row.
 :::
 
 ```{r read-af}
