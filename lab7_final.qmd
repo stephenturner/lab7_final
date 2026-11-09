@@ -23,7 +23,7 @@ You are the genomics data scientist on a team that works on obesity. A project l
 
 This is the last lab and it works differently from Labs 1 to 6. There are no fill-in-the-blank starter chunks and no single right answer at the end. The only code given to you reads the files in. The analysis chunks name *what* to compute and leave the *how* entirely to you (and your AI friends). Labs 1 to 6 taught you the all the moves (allele frequencies, genomic coordinates and overlaps, variant annotation, GWAS summary statistics, public-data integration, expression). This one asks you to use them to advise a decision.
 
-This document is both your instructions and your worksheet. Under each numbered heading there is a "What to do here" box, then space for your code and your writing. Work top to bottom. The data is included in `data/`. I encourage you to write the analysis code yourself, but you may use AI to help with or explain code so long as you disclose it at the end. **The interpretation and the recommendation must be your own words.**
+This document is both your instructions and your worksheet. Under each numbered heading there is a "What to do here" box, then space for your code and your writing. Work top to bottom. The data is included in `data/`. I encourage you to write the analysis code yourself if you can, but you may use AI to help with planning, writing code, or explaining code so long as you disclose it at the end. **The interpretation and the recommendation must be your own words and not AI generated.**
 
 ## Before you start
 
@@ -31,6 +31,7 @@ This document is both your instructions and your worksheet. Under each numbered 
 - Keep all data files in the `data/` folder next to this notebook.
 - Every code chunk runs when you render. Each of the three analysis chunks ends in a `stop()` line that throws an error until you delete it, and errors print into the HTML instead of stopping the render, so **a chunk that still shows a red error block in your rendered HTML is not done**. A chunk left broken costs you those points even if the code beneath it is right.
 - Complete the **AI disclosure** section at the end, including your audit of the AI brief. It is a scored part of this lab.
+- Delete all the pre-filled comment lines in each of the code boxes. I left some TODOs and hints for you in each.
 
 **Suggested length:** about 500-1,000 words of prose, not counting code, output, tables, plots.
 
@@ -38,7 +39,7 @@ This document is both your instructions and your worksheet. Under each numbered 
 
 | Part | Points |
 | --- | --- |
-| Sections 1 to 4: correct analyses, and prose that interprets them | 20 |
+| Sections 1 to 4: correct analyses and prose that interprets those analyses | 20 |
 | Section 5: verdicts, the ranking and why, two rewrites backed by a number | 15 |
 | Section 6: a clear position on both questions, with cautions tied to your numbers | 20 |
 | Renders cleanly, honest AI disclosure | 5 |
