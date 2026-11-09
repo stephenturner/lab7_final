@@ -1,0 +1,192 @@
+---
+title: "Lab 7 (Final): A Variant Consult"
+subtitle: "DS 5080 Genomics Foundations -- rs9939609, FTO, and body mass index"
+author: "Your name here"
+date: last-modified
+format:
+  html:
+    toc: true
+    toc-depth: 1
+    embed-resources: true
+    code-fold: false
+execute:
+  error: true
+  warning: false
+  message: false
+---
+
+## The assignment {.unnumbered}
+
+You are the genomics data scientist on a team that works on obesity. A project lead has noticed that the strongest common variant signal for body mass index (BMI) sits at **[rs9939609](https://www.ncbi.nlm.nih.gov/snp/rs9939609)**, inside the **[FTO](https://en.wikipedia.org/wiki/FTO_gene)** gene, and wants to move fast on two fronts: treat FTO as the gene to chase for functional and drug target work, and fold the variant into a customer-facing obesity risk score. Before the team commits, they ask you for a short, evidence-based read.
+
+**Your job:** write a consult memo that reaches a clear recommendation and defends it with the data. You are not writing a textbook summary. You are advising a decision, and you have to take a position.
+
+This is the last lab and it works differently from Labs 1 to 6. There are no fill-in-the-blank starter chunks and no single right answer at the end. The only code given to you reads the files in. The analysis chunks name *what* to compute and leave the *how* entirely to you (and your AI friends). Labs 1 to 6 taught you the all the moves (allele frequencies, genomic coordinates and overlaps, variant annotation, GWAS summary statistics, public-data integration, expression). This one asks you to use them to advise a decision.
+
+This document is both your instructions and your worksheet. Under each numbered heading there is a "What to do here" box, then space for your code and your writing. Work top to bottom. The data is included in `data/`. I encourage you to write the analysis code yourself, but you may use AI to help with or explain code so long as you disclose it at the end. **The interpretation and the recommendation must be your own words.**
+
+## Before you start
+
+- Render early and often. Submit the rendered `lab7_final.html`.
+- Keep all data files in the `data/` folder next to this notebook.
+- Every code chunk runs when you render. Each of the three analysis chunks ends in a `stop()` line that throws an error until you delete it, and errors print into the HTML instead of stopping the render, so **a chunk that still shows a red error block in your rendered HTML is not done**. A chunk left broken costs you those points even if the code beneath it is right.
+- Complete the **AI disclosure** section at the end, including your audit of the AI brief. It is a scored part of this lab.
+
+**Suggested length:** about 500-1,000 words of prose, not counting code, output, tables, plots.
+
+**Grading.** This lab is worth 60 points (double a standard lab) and does not use the standard lab rubric. Most of the points are for what you conclude and how well your own numbers back it up. 
+
+| Part | Points |
+| --- | --- |
+| Section 6: a clear position on both questions, with cautions tied to your numbers | 22 |
+| Sections 2 to 4: correct analyses, and prose that interprets them | 19 |
+| Section 5: verdicts, the ranking and why, two rewrites backed by a number | 16 |
+| Renders cleanly, honest AI disclosure | 3 |
+
+Everything is graded from the document you submit. After the due date we will walk through the case together in class, which is a debrief and is not graded.
+
+### The data
+
+All four files are **real downloads**, not teaching stand-ins, because you are drawing a real scientific conclusion from them. They were pulled once and staged so that graded work needs no internet.
+
+| File | What it is |
+| --- | --- |
+| `data/lab7_fto_gwascat.csv` | Every association reported for this SNP in the NHGRI-EBI GWAS Catalog: trait, risk allele, effect size, p-value, PMID. Left with its real rough edges (some rows report `?` for the allele, or no effect size). |
+| `data/lab7_fto_af.csv` | Risk-allele (A) frequency by genetic-ancestry group, gnomAD genomes via Ensembl. |
+| `data/lab7_fto_ccre.bed` | ENCODE candidate cis-regulatory elements within 20 kb of the SNP, from UCSC (hg38). |
+| `data/lab7_fto_ai_brief.md` | An AI-written summary of this variant. You audit it in Section 5. |
+
+```{r setup}
+library(tidyverse)
+
+# Given facts about the variant (you do not need to change these)
+rsid <- "rs9939609"
+gene_host <- "FTO"
+chrom <- "chr16"
+pos <- 53786615 # hg38
+risk_allele <- "A"
+trait <- "body mass index (BMI)"
+```
+
+# 1. Your charge and the variant
+
+::: {.callout-note}
+## What to do here
+In one short paragraph (about 100 words), state the question you have been asked in your own words, and lay out the basic facts of the variant from the constants above: the rsID, its location (hg38), the gene it sits inside, that it is a common intronic (noncoding) variant, and which allele is the risk allele. Do not analyze anything yet. Just frame the consult.
+:::
+
+> WRITE (~100 words): the question, in your own words, and the variant's basic facts.
+
+# 2. How strong is the association, and what kind of effect?
+
+::: {.callout-note}
+## What to do here
+Read `data/lab7_fto_gwascat.csv` (real associations for this SNP from the NHGRI-EBI GWAS Catalog). Find the body-mass-index rows and read off, for the risk allele, the per-allele effect size (a beta, in kg/m^2) and the p-value. Notice how many different traits this one SNP is associated with. Then answer in prose: is this a large or a modest per-allele effect for a *common* variant, and what do the very small p-value and the repeated reports across studies tell you (and, just as important, what do they *not* tell you)?
+:::
+
+```{r read-gwas}
+gwas <- read_csv("data/lab7_fto_gwascat.csv")
+gwas
+```
+
+```{r analyze-gwas}
+# TODO: pull out the BMI row(s) and report the per-allele beta and the p-value for the risk allele.
+# TODO: count how many distinct traits this single SNP is associated with.
+# Delete the stop() line once you have written your code.
+stop("Not done: replace this line with your code")
+```
+
+> WRITE (~150 words): interpret the effect size and the significance. Is the effect large or modest for a common variant? What does p = 4e-51 mean, and does a smaller p-value mean a bigger effect? What does the number of associated traits suggest about this locus?
+
+# 3. Who carries the risk allele?
+
+::: {.callout-note}
+## What to do here
+Read `data/lab7_fto_af.csv` (real risk-allele frequencies by genetic-ancestry group, from gnomAD via Ensembl). Make one labelled, ordered bar plot of the risk-allele frequency across groups, and read off the highest- and lowest-frequency groups with numbers. Then answer in prose: describe the pattern across ancestries, and say what it means for a polygenic risk score trained mostly in Europeans and then applied to other groups. Remember these are population frequencies, not any individual's risk.
+:::
+
+```{r read-af}
+af <- read_csv("data/lab7_fto_af.csv")
+af
+```
+
+```{r plot-af}
+# TODO: bar plot of allele_freq by population (ordered, with axis labels and a title).
+# TODO: identify the highest- and lowest-frequency groups.
+# Delete the stop() line once you have written your code.
+stop("Not done: replace this line with your code")
+```
+
+> WRITE (~100 words): describe the ancestry pattern with numbers, and explain the polygenic-risk-score portability concern it raises.
+
+# 4. Which gene does the variant act through?
+
+::: {.callout-note}
+## What to do here
+Read `data/lab7_fto_ccre.bed` (ENCODE candidate cis-regulatory elements within 20 kb of the SNP, from UCSC). Work out two things: does the lead SNP position fall *inside* any of these candidate regulatory elements, and how many candidate elements sit in the window? Then reason in prose about the central question of the consult: the SNP sits in FTO, but is FTO necessarily the gene it acts on? Address the tag-versus-causal point (a GWAS lead SNP is usually a tag in linkage disequilibrium, not the proven functional variant) and the "nearest gene" trap, and say what kind of evidence would actually establish the causal gene.
+:::
+
+```{r read-ccre}
+ccre <- read_tsv("data/lab7_fto_ccre.bed", comment = "#")
+ccre
+```
+
+```{r analyze-ccre}
+# TODO: determine whether `pos` falls inside any cCRE interval.
+# TODO: count how many cCREs sit in the window.
+# Delete the stop() line once you have written your code.
+stop("Not done: replace this line with your code")
+```
+
+> WRITE (~140 words): the regulatory picture, and your reasoning about whether FTO is the gene the variant acts through. What evidence would settle it?
+
+# 5. Fact-check the AI brief
+
+::: {.callout-note}
+## What to do here
+A colleague asked a general-purpose AI assistant to summarize this variant, and pasted the result below. It is confident and mostly fluent, and several of its claims are wrong or overstated. Audit it. Fill in the table with a row per numbered claim: mark it **correct**, **overstated**, or **wrong**, and give a one-line reason grounded in *your own* results above or in course concepts. Then, below the table, decide which **two** claims are the *worst* and say why they are the worst before you fix them. Being wrong is not the same as being damaging: rank the claims by what would actually happen if this team acted on them, and defend your ranking in two or three sentences. Then rewrite those two claims correctly, and back at least one of your corrections with a real number from your staged data (for example an allele frequency or the effect size). This section is the part an AI cannot do for you, because you are checking an AI.
+:::
+
+```{r show-brief}
+#| echo: false
+#| comment: ""
+writeLines(readLines("data/lab7_fto_ai_brief.md"))
+```
+
+The brief makes five checkable claims:
+
+1. Because the variant sits inside FTO, FTO must be the gene that causes the weight gain.
+2. p ~ 4e-51 means the variant has a very large effect on BMI and explains a substantial fraction of obesity risk.
+3. A person with two copies of the risk allele will become obese.
+4. The risk allele is essentially absent outside Europeans, so the finding is mainly relevant to people of European ancestry.
+5. Because the variant is intronic (not in a coding exon), it cannot have any functional consequence.
+
+| # | Verdict (correct / overstated / wrong) | One-line reason, grounded in your results |
+|---|----------------------------------------|-------------------------------------------|
+| 1 |                                        |                                           |
+| 2 |                                        |                                           |
+| 3 |                                        |                                           |
+| 4 |                                        |                                           |
+| 5 |                                        |                                           |
+
+> WRITE (~60 words): which two claims are the worst, and why those two? Rank by the damage the claim would do if the team believed it, not just by how wrong it is.
+
+> WRITE: your two rewrites. Correct each claim, and support at least one correction with a specific number from your data.
+
+# 6. Your recommendation
+
+::: {.callout-note}
+## What to do here
+This is the memo's point. In about 200 words, give the team your recommendation, grounded in Sections 2 to 4, on the two things they asked about: (a) should they treat FTO as the causal gene and prioritize it for functional and drug-target work, and (b) is rs9939609 a sound basis for a customer-facing obesity risk score? Take a clear position on each. Then list the specific cautions a data scientist must carry here, tied to your own numbers rather than generic boilerplate: the modest per-allele effect of a common variant, the tag-versus-causal problem and the nearest-gene trap, the ancestry differences in risk-allele frequency and what they do to a risk score's portability, and the fact that these frequencies and associations come from particular cohorts.
+:::
+
+> WRITE (~200 words): your recommendation on (a) and (b), and the case-specific cautions.
+
+# AI disclosure {.unnumbered}
+
+::: {.callout-note}
+## What to do here
+State what AI tool(s) you used, on what tasks (for example writing or fixing a plot, explaining a function), what you independently verified against the data or the course material, and one thing the AI got wrong or oversimplified. Honest disclosure is never itself penalized; undisclosed use or AI-authored interpretation is an integrity violation.
+:::
+
+> WRITE: your AI disclosure.
