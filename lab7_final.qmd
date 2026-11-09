@@ -23,7 +23,18 @@ You are the genomics data scientist on a team that works on obesity. A project l
 
 This is the last lab and it works differently from Labs 1 to 6. There are no fill-in-the-blank starter chunks and no single right answer at the end. The only code given to you reads the files in. The analysis chunks name *what* to compute and leave the *how* entirely to you (and your AI friends). Labs 1 to 6 taught you the all the moves (allele frequencies, genomic coordinates and overlaps, variant annotation, GWAS summary statistics, public-data integration, expression). This one asks you to use them to advise a decision.
 
-This document is both your instructions and your worksheet. Under each numbered heading there is a "What to do here" box, then space for your code and your writing. Work top to bottom. The data is included in `data/`. I encourage you to write the analysis code yourself if you can, but you may use AI to help with planning, writing code, or explaining code so long as you disclose it at the end. **The interpretation and the recommendation must be your own words and not AI generated.**
+This document is both your instructions and your worksheet. Under each numbered heading there is a "What to do here" box, then space for your code and your writing. Work top to bottom. The data is included in `data/`. 
+
+::: {.callout-tip}
+## On using AI in this assignment
+This assignment isn't easy. There aren't simple answers, with much of the interpretation being open-ended. 
+
+For code: I encourage you to write the analysis code yourself if you can, but you may use AI to help with planning, writing code, or explaining code so long as you disclose it at the end. I don't care about the mechanics of the code as much as I care about you thinking like a data scientist in genomics would think. 
+
+For your narrative: The interpretation and the recommendation must be your own words and not AI generated.
+
+For background: FTO is probably one of the most well-known cautionary tale in GWAS interpretation. A SNP in this gene was one of the strongest common obesity SNPs, sitting in an intron of a gene that for years got credit it may not deserve. Fire up your favorite AI and ask it to summarize the FTO story. You don't need to read the primary papers in full. The abstracts are enough to see what kinds of evidence were used to settle the causal gene question. You might want to peek at the Wikipedia pages for [FTO](https://en.wikipedia.org/wiki/FTO_gene) and [IRX3](https://en.wikipedia.org/wiki/IRX3), specifically looking for information on the FTO-IRX3 regulatory connection and the relationship with obesity.
+:::
 
 ## Before you start
 
