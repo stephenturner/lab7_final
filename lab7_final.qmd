@@ -38,10 +38,10 @@ This document is both your instructions and your worksheet. Under each numbered 
 
 | Part | Points |
 | --- | --- |
-| Section 6: a clear position on both questions, with cautions tied to your numbers | 22 |
-| Sections 2 to 4: correct analyses, and prose that interprets them | 19 |
-| Section 5: verdicts, the ranking and why, two rewrites backed by a number | 16 |
-| Renders cleanly, honest AI disclosure | 3 |
+| Sections 1 to 4: correct analyses, and prose that interprets them | 20 |
+| Section 5: verdicts, the ranking and why, two rewrites backed by a number | 15 |
+| Section 6: a clear position on both questions, with cautions tied to your numbers | 20 |
+| Renders cleanly, honest AI disclosure | 5 |
 
 ### The data
 
@@ -90,6 +90,17 @@ gwas
 ```{r analyze-gwas}
 # TODO: pull out the BMI row(s) and report the per-allele beta and the p-value for the risk allele.
 # TODO: count how many distinct traits this single SNP is associated with.
+# Hints: look at the whole table before filtering. filter() on trait, risk_allele, and
+#   effect_type gets you the clean BMI rows.
+#   str_detect(x, "pattern") returns TRUE for every element of x that contains
+#   "pattern" anywhere inside it, so inside filter() it keeps the rows that match.
+#   For example, gwas |> filter(str_detect(trait, "diabetes")) keeps every trait
+#   with "diabetes" somewhere in its name. Matching is case-sensitive, and it is
+#   handy here because an exact test like trait == "..." fails if the text differs
+#   by a single character.
+#   arrange() or slice_min() on p_value finds the headline row. distinct() or
+#   n_distinct() counts traits. Some rows have "?" for the allele or no effect size;
+#   decide what to do with them and say so.
 # Delete the stop() line once you have written your code.
 stop("Not done: replace this line with your code")
 ```
@@ -111,6 +122,11 @@ af
 ```{r plot-af}
 # TODO: bar plot of allele_freq by population (ordered, with axis labels and a title).
 # TODO: identify the highest- and lowest-frequency groups.
+# Hints: geom_col() draws bars from values already in the table (geom_bar() counts
+#   rows, which is not what you want). fct_reorder(population, allele_freq) puts the
+#   bars in order. Long group names are easier to read on the y axis. labs() sets
+#   the title and axis labels. slice_max() and slice_min() (or arrange()) pull out
+#   the extremes.
 # Delete the stop() line once you have written your code.
 stop("Not done: replace this line with your code")
 ```
@@ -132,6 +148,12 @@ ccre
 ```{r analyze-ccre}
 # TODO: determine whether `pos` falls inside any cCRE interval.
 # TODO: count how many cCREs sit in the window.
+# Hints: this is the interval test from Lab 2, done on a data frame. filter() for the
+#   rows whose start and end bracket `pos`, then nrow(). BED starts are 0-based and
+#   `pos` is 1-based, so think about which inequality is right (it will not change
+#   the answer here, but get it right anyway). If no element contains the SNP, it is
+#   worth knowing how far away the nearest one is. GenomicRanges::findOverlaps()
+#   also works; add 1 to the BED start when you build the GRanges.
 # Delete the stop() line once you have written your code.
 stop("Not done: replace this line with your code")
 ```
@@ -142,7 +164,7 @@ stop("Not done: replace this line with your code")
 
 ::: {.callout-note}
 ## What to do here
-A colleague asked a general-purpose AI assistant to summarize this variant, and pasted the result below. Your colleague was cheap and used a sub-frontier open-weight model running on their laptop. It is confident and mostly fluent, and several of its claims are wrong or overstated. Audit it. Fill in the table with a row per numbered claim: mark it **correct**, **overstated**, or **wrong**, and give a one-line reason grounded in *your own* results above or in course concepts. Then, below the table, decide which **two** claims are the *worst* and say why they are the worst before you fix them. Being wrong is not the same as being damaging: rank the claims by what would actually happen if this team acted on them, and defend your ranking in two or three sentences. Then rewrite those two claims correctly, and back at least one of your corrections with a real number from your staged data (for example an allele frequency or the effect size). Because you are checking an AI's work, I highly recommend you do not use any AI to write your audit or your rewrites. You've reached the end of the course by now! You are the expert here, and the AI is not. 
+A colleague asked a general-purpose AI assistant to summarize this variant, and pasted the result below. Your colleague was cheap and used a sub-frontier open-weight model running on their laptop. It is confident and mostly fluent, and several of its claims are wrong or overstated. Audit it. For each numbered claim below, mark it **correct**, **overstated**, or **wrong**, and give a one-line reason grounded in *your own* results above or in course concepts. Then, after the list, decide which **two** claims are the *worst* and say why they are the worst before you fix them. Being wrong is not the same as being damaging: rank the claims by what would actually happen if this team acted on them, and defend your ranking in two or three sentences. Then rewrite those two claims correctly, and back at least one of your corrections with a real number from your staged data (for example an allele frequency or the effect size). Because you are checking an AI's work, I highly recommend you do not use any AI to write your audit or your rewrites. You've reached the end of the course by now! You are the expert here, and the AI is not. 
 :::
 
 ```{r show-brief}
@@ -157,9 +179,17 @@ writeLines(readLines("data/lab7_fto_ai_brief.md"))
     1. _Verdict: correct / overstated / wrong_: __________
     1. _One-line reason, based on your results_: __________
 2. **p ~ 4e-51 means the variant has a very large effect on BMI and *explains a substantial fraction of obesity risk*.**
+    1. _Verdict: correct / overstated / wrong_: __________
+    1. _One-line reason, based on your results_: __________
 3. **A person with two copies of the risk allele *will become obese*.**
+    1. _Verdict: correct / overstated / wrong_: __________
+    1. _One-line reason, based on your results_: __________
 4. **The risk allele is essentially absent outside Europeans, so *the finding is mainly relevant to people of European ancestry*.**
+    1. _Verdict: correct / overstated / wrong_: __________
+    1. _One-line reason, based on your results_: __________
 5. **Because the variant is intronic (not in a coding exon), *it cannot have any functional consequence*.**
+    1. _Verdict: correct / overstated / wrong_: __________
+    1. _One-line reason, based on your results_: __________
 
 > WRITE (~50 words): which two claims are the worst, and why those two? Rank by the damage the claim would do if the team believed it, not just by how wrong it is.
 
