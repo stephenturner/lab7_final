@@ -43,18 +43,16 @@ This document is both your instructions and your worksheet. Under each numbered 
 | Section 5: verdicts, the ranking and why, two rewrites backed by a number | 16 |
 | Renders cleanly, honest AI disclosure | 3 |
 
-Everything is graded from the document you submit. After the due date we will walk through the case together in class, which is a debrief and is not graded.
-
 ### The data
 
-All four files are **real downloads**, not teaching stand-ins, because you are drawing a real scientific conclusion from them. They were pulled once and staged so that graded work needs no internet.
+All four files are **real downloads** ie not simulated data, because I'm asking you to draw a real scientific conclusion from them.
 
 | File | What it is |
 | --- | --- |
-| `data/lab7_fto_gwascat.csv` | Every association reported for this SNP in the NHGRI-EBI GWAS Catalog: trait, risk allele, effect size, p-value, PMID. Left with its real rough edges (some rows report `?` for the allele, or no effect size). |
-| `data/lab7_fto_af.csv` | Risk-allele (A) frequency by genetic-ancestry group, gnomAD genomes via Ensembl. |
+| `data/lab7_fto_gwascat.csv` | Real associations reported for this SNP in the NHGRI-EBI GWAS Catalog: trait, risk allele, effect size, p-value, PMID. Left with its real rough edges (some rows report `?` for the allele, or no effect size). |
+| `data/lab7_fto_af.csv` | Risk-allele (A) frequency by genetic ancestry group, gnomAD genomes via Ensembl. |
 | `data/lab7_fto_ccre.bed` | ENCODE candidate cis-regulatory elements within 20 kb of the SNP, from UCSC (hg38). |
-| `data/lab7_fto_ai_brief.md` | An AI-written summary of this variant. You audit it in Section 5. |
+| `data/lab7_fto_ai_brief.md` | An AI-written summary of this variant. You're going to audit it in Section 5. |
 
 ```{r setup}
 library(tidyverse)
@@ -63,7 +61,7 @@ library(tidyverse)
 rsid <- "rs9939609"
 gene_host <- "FTO"
 chrom <- "chr16"
-pos <- 53786615 # hg38
+pos <- 53786615
 risk_allele <- "A"
 trait <- "body mass index (BMI)"
 ```
@@ -96,13 +94,13 @@ gwas
 stop("Not done: replace this line with your code")
 ```
 
-> WRITE (~150 words): interpret the effect size and the significance. Is the effect large or modest for a common variant? What does p = 4e-51 mean, and does a smaller p-value mean a bigger effect? What does the number of associated traits suggest about this locus?
+> WRITE (~100 words): interpret the effect size and the significance. Is the effect large or modest for a common variant? What does p = 4e-51 mean, and does a smaller p-value mean a bigger effect? What does the number of associated traits suggest about this locus?
 
 # 3. Who carries the risk allele?
 
 ::: {.callout-note}
 ## What to do here
-Read `data/lab7_fto_af.csv` (real risk-allele frequencies by genetic-ancestry group, from gnomAD via Ensembl). Make one labelled, ordered bar plot of the risk-allele frequency across groups, and read off the highest- and lowest-frequency groups with numbers. Then answer in prose: describe the pattern across ancestries, and say what it means for a polygenic risk score trained mostly in Europeans and then applied to other groups. Remember these are population frequencies, not any individual's risk.
+Read `data/lab7_fto_af.csv` (real risk-allele frequencies by genetic-ancestry group, from gnomAD via Ensembl). Make one labelled, ordered bar plot of the risk allele frequency across groups, and read off the highest- and lowest-frequency groups with numbers. Then answer in prose: describe the pattern across ancestries, and say what it means for a polygenic risk score trained mostly in Europeans and then applied to other groups. Remember these are population frequencies, not any individual's risk.
 :::
 
 ```{r read-af}
@@ -138,13 +136,13 @@ ccre
 stop("Not done: replace this line with your code")
 ```
 
-> WRITE (~140 words): the regulatory picture, and your reasoning about whether FTO is the gene the variant acts through. What evidence would settle it?
+> WRITE (~100 words): the regulatory picture, and your reasoning about whether FTO is the gene the variant acts through. What evidence would settle it?
 
 # 5. Fact-check the AI brief
 
 ::: {.callout-note}
 ## What to do here
-A colleague asked a general-purpose AI assistant to summarize this variant, and pasted the result below. It is confident and mostly fluent, and several of its claims are wrong or overstated. Audit it. Fill in the table with a row per numbered claim: mark it **correct**, **overstated**, or **wrong**, and give a one-line reason grounded in *your own* results above or in course concepts. Then, below the table, decide which **two** claims are the *worst* and say why they are the worst before you fix them. Being wrong is not the same as being damaging: rank the claims by what would actually happen if this team acted on them, and defend your ranking in two or three sentences. Then rewrite those two claims correctly, and back at least one of your corrections with a real number from your staged data (for example an allele frequency or the effect size). This section is the part an AI cannot do for you, because you are checking an AI.
+A colleague asked a general-purpose AI assistant to summarize this variant, and pasted the result below. Your colleague was cheap and used a sub-frontier open-weight model running on their laptop. It is confident and mostly fluent, and several of its claims are wrong or overstated. Audit it. Fill in the table with a row per numbered claim: mark it **correct**, **overstated**, or **wrong**, and give a one-line reason grounded in *your own* results above or in course concepts. Then, below the table, decide which **two** claims are the *worst* and say why they are the worst before you fix them. Being wrong is not the same as being damaging: rank the claims by what would actually happen if this team acted on them, and defend your ranking in two or three sentences. Then rewrite those two claims correctly, and back at least one of your corrections with a real number from your staged data (for example an allele frequency or the effect size). Because you are checking an AI's work, I highly recommend you do not use any AI to write your audit or your rewrites. You've reached the end of the course by now! You are the expert here, and the AI is not. 
 :::
 
 ```{r show-brief}
@@ -153,23 +151,17 @@ A colleague asked a general-purpose AI assistant to summarize this variant, and 
 writeLines(readLines("data/lab7_fto_ai_brief.md"))
 ```
 
-The brief makes five checkable claims:
+> WRITE (~10-20 words for each verdict and reason): The brief makes five checkable claims. Audit each one below, replacing the blanks with your answers.
 
-1. Because the variant sits inside FTO, FTO must be the gene that causes the weight gain.
-2. p ~ 4e-51 means the variant has a very large effect on BMI and explains a substantial fraction of obesity risk.
-3. A person with two copies of the risk allele will become obese.
-4. The risk allele is essentially absent outside Europeans, so the finding is mainly relevant to people of European ancestry.
-5. Because the variant is intronic (not in a coding exon), it cannot have any functional consequence.
+1. **Because the variant sits inside FTO, FTO must be the gene that *causes* the weight gain.**
+    1. _Verdict: correct / overstated / wrong_: __________
+    1. _One-line reason, based on your results_: __________
+2. **p ~ 4e-51 means the variant has a very large effect on BMI and *explains a substantial fraction of obesity risk*.**
+3. **A person with two copies of the risk allele *will become obese*.**
+4. **The risk allele is essentially absent outside Europeans, so *the finding is mainly relevant to people of European ancestry*.**
+5. **Because the variant is intronic (not in a coding exon), *it cannot have any functional consequence*.**
 
-| # | Verdict (correct / overstated / wrong) | One-line reason, grounded in your results |
-|---|----------------------------------------|-------------------------------------------|
-| 1 |                                        |                                           |
-| 2 |                                        |                                           |
-| 3 |                                        |                                           |
-| 4 |                                        |                                           |
-| 5 |                                        |                                           |
-
-> WRITE (~60 words): which two claims are the worst, and why those two? Rank by the damage the claim would do if the team believed it, not just by how wrong it is.
+> WRITE (~50 words): which two claims are the worst, and why those two? Rank by the damage the claim would do if the team believed it, not just by how wrong it is.
 
 > WRITE: your two rewrites. Correct each claim, and support at least one correction with a specific number from your data.
 
@@ -177,10 +169,10 @@ The brief makes five checkable claims:
 
 ::: {.callout-note}
 ## What to do here
-This is the memo's point. In about 200 words, give the team your recommendation, grounded in Sections 2 to 4, on the two things they asked about: (a) should they treat FTO as the causal gene and prioritize it for functional and drug-target work, and (b) is rs9939609 a sound basis for a customer-facing obesity risk score? Take a clear position on each. Then list the specific cautions a data scientist must carry here, tied to your own numbers rather than generic boilerplate: the modest per-allele effect of a common variant, the tag-versus-causal problem and the nearest-gene trap, the ancestry differences in risk-allele frequency and what they do to a risk score's portability, and the fact that these frequencies and associations come from particular cohorts.
+This is the memo's point. In about 150 words, give the team your recommendation, grounded in Sections 2 to 4, on the two things they asked about: (a) should they treat FTO as the causal gene and prioritize it for functional and drug-target work, and (b) is rs9939609 a sound basis for a customer-facing obesity risk score? Take a clear position on each. Then list the specific cautions a data scientist must carry here, tied to your own numbers rather than generic boilerplate: the modest per-allele effect of a common variant, the tag-versus-causal problem and the nearest-gene trap, the ancestry differences in risk-allele frequency and what they do to a risk score's portability, and the fact that these frequencies and associations come from particular cohorts.
 :::
 
-> WRITE (~200 words): your recommendation on (a) and (b), and the case-specific cautions.
+> WRITE (~150 words): your recommendation on (a) and (b), and the case-specific cautions.
 
 # AI disclosure {.unnumbered}
 

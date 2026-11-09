@@ -1,0 +1,10 @@
+population,code,risk_allele,allele_freq,source
+Ashkenazi Jewish,asj,A,0.5063,gnomAD genomes via Ensembl REST
+African / African-American,afr,A,0.4788,gnomAD genomes via Ensembl REST
+Amish,ami,A,0.4637,gnomAD genomes via Ensembl REST
+European (non-Finnish),nfe,A,0.4079,gnomAD genomes via Ensembl REST
+European (Finnish),fin,A,0.3992,gnomAD genomes via Ensembl REST
+Middle Eastern,mid,A,0.3844,gnomAD genomes via Ensembl REST
+Admixed American,amr,A,0.3149,gnomAD genomes via Ensembl REST
+South Asian,sas,A,0.3148,gnomAD genomes via Ensembl REST
+East Asian,eas,A,0.1548,gnomAD genomes via Ensembl REST

@@ -1,0 +1,13 @@
+trait,risk_allele,effect_type,effect_size,p_value,risk_freq,reported_gene,pmid
+body mass index,A,beta (kg/m2),0.33,4e-51,0.41,FTO,19079261
+body mass index,A,beta (kg/m2),0.36,3e-35,0.39,FTO,17434869
+type 2 diabetes mellitus,A,odds ratio (per allele),1.25,1e-20,0.40,FTO,22693455
+diastolic blood pressure,?,not reported,NA,2e-17,not reported,not reported,27790247
+body mass index,?,beta (unit),0.0537,9e-16,not reported,not reported,31217584
+atrial fibrillation,?,not reported,NA,1e-14,not reported,not reported,27790247
+saturated fatty acids to total fatty acids percentage ,A,not reported,NA,3e-11,not reported,not reported,40545721
+age at menarche,A,beta (week),2.1,3e-8,0.40,FTO,21102462
+metabolic syndrome,T,beta (unit),0.0871,3e-8,0.1298,not reported,38201907
+type 2 diabetes mellitus,A,odds ratio (per allele),1.34,2e-7,0.40,FTO,17554300
+body mass index,A,beta (kg/m2),0.24,2e-7,0.13,FTO,19396169
+body mass index,?,not reported,NA,1e-6,not reported,FTO,31513605
