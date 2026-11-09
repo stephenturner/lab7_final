@@ -21,7 +21,7 @@ You are the genomics data scientist on a team that works on obesity. A project l
 
 **Your job:** write a consult memo that reaches a clear recommendation and defends it with the data. You are not writing a textbook summary. You are advising a decision, and you have to take a position.
 
-This is the last lab and it works differently from Labs 1 to 6. There are no fill-in-the-blank starter chunks and no single right answer at the end. The only code given to you reads the files in. The analysis chunks name *what* to compute and leave the *how* entirely to you (and your AI friends). Labs 1 to 6 taught you the all the moves (allele frequencies, genomic coordinates and overlaps, variant annotation, GWAS summary statistics, public-data integration, expression). This one asks you to use them to advise a decision.
+This is the last lab and it works differently from Labs 1 to 6. There are no fill-in-the-blank starter chunks and no single right answer at the end. The only code given to you reads the files in. The analysis chunks name *what* to compute and leave the *how* entirely to you (and your AI friends). Labs 1 to 6 taught you all the moves (allele frequencies, genomic coordinates and overlaps, variant annotation, GWAS summary statistics, public-data integration, expression). This one asks you to use them to advise a decision.
 
 This document is both your instructions and your worksheet. Under each numbered heading there is a "What to do here" box, then space for your code and your writing. Work top to bottom. The data is included in `data/`. 
 
@@ -33,7 +33,7 @@ For code: I encourage you to write the analysis code yourself if you can, but yo
 
 For your narrative: The interpretation and the recommendation must be your own words and not AI generated.
 
-For background: FTO is probably one of the most well-known cautionary tale in GWAS interpretation. A SNP in this gene was one of the strongest common obesity SNPs, sitting in an intron of a gene that for years got credit it may not deserve. Fire up your favorite AI and ask it to summarize the FTO story. You don't need to read the primary papers in full. The abstracts are enough to see what kinds of evidence were used to settle the causal gene question. You might want to peek at the Wikipedia pages for [FTO](https://en.wikipedia.org/wiki/FTO_gene) and [IRX3](https://en.wikipedia.org/wiki/IRX3), specifically looking for information on the FTO-IRX3 regulatory connection and the relationship with obesity.
+For background: FTO is probably the best-known cautionary tale in GWAS interpretation. A SNP in this gene was one of the strongest common obesity SNPs, sitting in an intron of a gene that for years got credit it may not deserve. Fire up your favorite AI and ask it to summarize the FTO story. Section 4 links the two key primary papers. You don't need to read them in full; the abstracts are enough to see what kinds of evidence were used to settle the causal gene question. You might want to peek at the Wikipedia pages for [FTO](https://en.wikipedia.org/wiki/FTO_gene) and [IRX3](https://en.wikipedia.org/wiki/IRX3), specifically looking for information on the FTO-IRX3 regulatory connection and the relationship with obesity.
 :::
 
 ## Before you start
@@ -41,8 +41,8 @@ For background: FTO is probably one of the most well-known cautionary tale in GW
 - Render early and often. Submit the rendered `lab7_final.html`.
 - Keep all data files in the `data/` folder next to this notebook.
 - Every code chunk runs when you render. Each of the three analysis chunks ends in a `stop()` line that throws an error until you delete it, and errors print into the HTML instead of stopping the render, so **a chunk that still shows a red error block in your rendered HTML is not done**. A chunk left broken costs you those points even if the code beneath it is right.
-- Complete the **AI disclosure** section at the end, including your audit of the AI brief. It is a scored part of this lab.
-- Delete all the pre-filled comment lines in each of the code boxes. I left some TODOs and hints for you in each.
+- Section 5 (your audit of the AI brief) and the **AI disclosure** section at the end are both scored. Don't skip either.
+- Each analysis chunk starts with TODO and hint comments. Read them, write your code, then delete the comments and the `stop()` line.
 
 **Suggested length:** about 500-1,000 words of prose, not counting code, output, tables, plots.
 
@@ -51,13 +51,13 @@ For background: FTO is probably one of the most well-known cautionary tale in GW
 | Part | Points |
 | --- | --- |
 | Sections 1 to 4: correct analyses and prose that interprets those analyses | 20 |
-| Section 5: why each claim is wrong, the ranking and why, two rewrites backed by a number | 15 |
+| Section 5: why each claim is wrong, your case for the worst two, two rewrites backed by a number | 15 |
 | Section 6: a clear position on both questions, with cautions tied to your numbers | 20 |
 | Renders cleanly, honest AI disclosure | 5 |
 
 ### The data
 
-All four files are **real downloads** ie not simulated data, because I'm asking you to draw a real scientific conclusion from them.
+The three data files are **real downloads**, not simulated data, because I'm asking you to draw a real scientific conclusion from them. The fourth file, the AI brief, was written for this lab.
 
 | File | What it is |
 | --- | --- |
@@ -92,6 +92,10 @@ In one short paragraph (about 100 words), state the question you have been asked
 ::: {.callout-note}
 ## What to do here
 Read `data/lab7_fto_gwascat.csv` (real associations for this SNP from the NHGRI-EBI GWAS Catalog). Find the body mass index rows and read off, for the risk allele, the per-allele effect size (a beta, in kg/m^2) and the p-value. Notice how many different traits this one SNP is associated with. Then answer in prose: is this a large or a modest per-allele effect for a *common* variant, and what do the very small p-value and the repeated reports across studies tell you (and, just as important, what do they *not* tell you)?
+
+The columns: `trait` is what the study measured; `risk_allele` is the allele the study reports the effect for; `effect_type` says what kind of number `effect_size` is (a beta in kg/m^2 for BMI, an odds ratio for a disease, or "not reported"); `p_value` is the association p-value; `risk_freq` is the risk allele's frequency in that study's sample (it reads in as text, because some rows say "not reported"); `pmid` is the PubMed ID of the paper. Each row is one reported association, so the same trait can appear more than once.
+
+For scale: in adults, BMI has a standard deviation of roughly 4 to 5 kg/m^2, and 1 kg/m^2 is about 3 kg of body weight for someone 1.75 m tall.
 :::
 
 ```{r read-gwas}
@@ -124,6 +128,8 @@ stop("Not done: replace this line with your code")
 ::: {.callout-note}
 ## What to do here
 Read `data/lab7_fto_af.csv` (real risk allele frequencies by genetic-ancestry group, from gnomAD via Ensembl). Make one labelled, ordered bar plot of the risk allele frequency across groups, and read off the highest- and lowest-frequency groups with numbers. Then answer in prose: describe the pattern across ancestries, and say what it means for a polygenic risk score trained mostly in Europeans and then applied to other groups. Remember these are population frequencies, not any individual's risk.
+
+The columns: `population` and `code` name a gnomAD genetic ancestry group, and `allele_freq` is the fraction of chromosomes in that group that carry the A allele (so 0.40 means 40% of chromosomes, not 40% of people).
 :::
 
 ```{r read-af}
@@ -151,6 +157,8 @@ stop("Not done: replace this line with your code")
 ## What to do here
 Read `data/lab7_fto_ccre.bed` (ENCODE candidate cis-regulatory elements within 20 kb of the SNP, from UCSC). Work out two things: does the lead SNP position fall *inside* any of these candidate regulatory elements, and how many candidate elements sit in the window? Then reason in prose about the central question of the consult: the SNP sits in FTO, but is FTO necessarily the gene it acts on? Address the tag-versus-causal point (a GWAS lead SNP is usually a tag in linkage disequilibrium, not the proven functional variant) and the "nearest gene" trap, and say what kind of evidence would actually establish the causal gene.
 
+Each row is one element: `start` and `end` are BED coordinates (0-based start), `name` is its ENCODE ID, and `label` is its type. The label codes are `enhD` (distal enhancer-like), `enhP` (proximal enhancer-like), `prom` (promoter-like), `CTCF` (CTCF-only), and `K4m3` (DNase plus H3K4me3). The window is the SNP position plus or minus 20,000 bp.
+
 For that last question, go back to the FTO case study from the GWAS 4 lecture. Two papers tell the story, and their abstracts are enough: [Smemo et al. 2014](https://pubmed.ncbi.nlm.nih.gov/24646999/) (*Nature*) showed that the obesity-associated region inside FTO physically contacts and regulates a different gene, *IRX3*, roughly half a megabase away. [Claussnitzer et al. 2015](https://pubmed.ncbi.nlm.nih.gov/26287746/) (*NEJM*) traced the signal to a different variant in the same LD block, which changes the expression of *IRX3* and *IRX5* in fat cell precursors. As you read, notice what *kinds* of evidence they used, because that is what your answer about settling the causal gene should name.
 :::
 
@@ -167,7 +175,8 @@ ccre
 #   `pos` is 1-based, so think about which inequality is right (it will not change
 #   the answer here, but get it right anyway). If no element contains the SNP, it is
 #   worth knowing how far away the nearest one is. GenomicRanges::findOverlaps()
-#   also works; add 1 to the BED start when you build the GRanges.
+#   also works (load GenomicRanges first, it is installed from Lab 2); add 1 to the
+#   BED start when you build the GRanges.
 # Delete the stop() line once you have written your code.
 stop("Not done: replace this line with your code")
 ```
@@ -178,7 +187,7 @@ stop("Not done: replace this line with your code")
 
 ::: {.callout-note}
 ## What to do here
-A colleague asked a general-purpose AI assistant to summarize this variant, and pasted the result below. Your colleague was cheap and used a sub-frontier open-weight model running on their laptop. It is confident and fluent, and all five of the numbered claims below are wrong. Audit it. For each claim, explain in one line *why* it is wrong, grounded in *your own* results above or in course concepts. Then, after the list, argue for which **two** claims are the *worst* and why. There is no single right pair, so make the case for yours. Being wrong is not the same as being damaging: base your argument on what would actually happen if this team acted on each claim, in two or three sentences. Then rewrite those two claims correctly, and back at least one of your corrections with a real number from your staged data (for example an allele frequency or the effect size). Because you are checking an AI's work, I highly recommend you do not use any AI to write your audit or your rewrites. You've reached the end of the course by now! You are the expert here, and the AI is not. 
+A colleague asked a general-purpose AI assistant to summarize this variant, and pasted the result below. Your colleague was cheap and used a sub-frontier open-weight model running on their laptop. It is confident and fluent, and all five of the numbered claims below are wrong. Audit it. For each claim, explain in one line *why* it is wrong, grounded in *your own* results above or in course concepts. Then, after the list, argue for which **two** claims are the *worst* and why. There is no single right pair, so make the case for yours. Being wrong is not the same as being damaging: base your argument on what would actually happen if this team acted on each claim, in two or three sentences. Then rewrite those two claims correctly, and back at least one of your corrections with a real number from your data (for example an allele frequency or the effect size). Because you are checking an AI's work, I highly recommend you do not use any AI to write your audit or your rewrites. You've reached the end of the course by now! You are the expert here, and the AI is not.
 :::
 
 ```{r show-brief}
@@ -220,4 +229,4 @@ This is the memo's point. In about 150 words, give the team your recommendation,
 State what AI tool(s) you used, on what tasks (for example writing or fixing a plot, explaining a function), what you independently verified against the data or the course material, and one thing the AI got wrong or oversimplified. Honest disclosure is never itself penalized; undisclosed use or AI-authored interpretation is an integrity violation.
 :::
 
-> WRITE: your AI disclosure.
+> WRITE (~100 words): your AI disclosure.
